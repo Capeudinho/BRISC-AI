@@ -8,6 +8,7 @@ for root, _, images in os.walk("../archive"):
 	path = f"../data/{os.path.relpath(root, "../archive")}"
 	os.makedirs(path, exist_ok = True)
 	for image in images:
-		image_file = img.open(f"{root}/{image}").convert("L")
-		image_file = transform(image_file)
-		image_file.save(f"{path}/{image}")
+		with img.open(f"{root}/{image}") as image_file:
+			new_image_file = image_file.convert("L")
+			new_image_file = transform(new_image_file)
+			new_image_file.save(f"{path}/{image}")
