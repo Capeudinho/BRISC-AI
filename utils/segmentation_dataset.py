@@ -1,7 +1,6 @@
 import os
 import torch
 import random as rd
-from PIL import Image as img
 from torch.utils.data import Dataset
 
 class SegmentationDataset(Dataset):
