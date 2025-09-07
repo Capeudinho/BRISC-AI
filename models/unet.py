@@ -47,5 +47,5 @@ class UNet(nn.Module):
 		new_up_2 = self.convolution_2(torch.cat([new_up_2, new_down_2], dim = 1))
 		new_up_1 = self.up_1(new_up_2)
 		new_up_1 = self.convolution_1(torch.cat([new_up_1, new_down_1], dim = 1))
-		result = torch.sigmoid(self.out_class(new_up_1))
+		result = self.out_class(new_up_1)
 		return result
