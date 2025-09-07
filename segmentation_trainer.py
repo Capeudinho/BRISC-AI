@@ -5,7 +5,6 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from models.unet import UNet
 from utils.segmentation_dataset import SegmentationDataset
-from datetime import datetime
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 training_dataset = SegmentationDataset("data/segmentation/training", 10)
@@ -17,7 +16,6 @@ model = UNet(in_channels = 1, classes = 1).to(device)
 criterion = nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr = 1e-3)
 epochs = 10
-print(datetime.now().strftime("%H:%M:%S"))
 for epoch in range(epochs):
 	print(f"Epoch {epoch+1} of {epochs}.")
 	model.train()
@@ -36,6 +34,5 @@ for epoch in range(epochs):
 			mask_tensors = mask_tensors.to(device)
 			preds = model(image_tensors)
 			loss = criterion(preds, mask_tensors)
-print(datetime.now().strftime("%H:%M:%S"))
 os.makedirs("exports", exist_ok = True)
 torch.save(model.state_dict(), "exports/unet_segmentation.pt")
