@@ -12,7 +12,8 @@ validating_dataset = SegmentationDataset("data/segmentation/validating", 10)
 training_loader = DataLoader(training_dataset, batch_size = 10, shuffle = True)
 validating_loader = DataLoader(validating_dataset, batch_size = 10, shuffle = False)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = UNet(in_channels = 1, out_channels = 1, base_channels = 64).to(device)
+base_channels = 64
+model = UNet(in_channels = 1, out_channels = 1, base_channels = base_channels).to(device)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.Adam(model.parameters(), lr = 1e-3)
 epochs = 10
@@ -40,4 +41,4 @@ for epoch in range(epochs):
 	# print(f"Epoch {epoch+1} of {epochs}, training loss of {training_loss}, validating loss of {validating_loss}.")
 	print(f"Epoch {epoch+1} of {epochs}, training loss of {training_loss}.")
 os.makedirs("exports", exist_ok = True)
-torch.save(model.state_dict(), "exports/unet_segmentation.pt")
+torch.save(model.state_dict(), f"exports/unet_segmentation_{base_channels}.pt")
