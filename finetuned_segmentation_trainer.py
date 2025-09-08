@@ -2,9 +2,9 @@ import os
 import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
+from ptflops import get_model_complexity_info
 from datasets.segmentation_dataset import SegmentationDataset
 from losses.bce_dice_loss import BCEDiceLoss
-from datetime import datetime
 
 training_quantity = 512
 validating_quantity = 256
@@ -22,9 +22,6 @@ training_loader = DataLoader(training_dataset, batch_size = batch_size, shuffle 
 validating_loader = DataLoader(validating_dataset, batch_size = batch_size, shuffle = False)
 criterion = BCEDiceLoss(dice_weight = 0.75)
 optimizer = optim.Adam(model.parameters(), lr = learning_rate)
-new_text = f"Started in {datetime.now().strftime("%H:%M:%S")}."
-log_text = new_text
-print(new_text)
 for epoch in range(epochs):
 	model.train()
 	training_loss = 0.0
@@ -49,13 +46,11 @@ for epoch in range(epochs):
 	# 		prediction_tensors = model(image_tensors)
 	# 		loss = criterion(prediction_tensors, mask_tensors)
 	# 		validating_loss = validating_loss+loss.item()
-	# new_text = f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss:.8f}, validating loss of {validating_loss:.8f}."
-	new_text = f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss:.8f}."
-	log_text = f"{log_text}\n{new_text}"
-	print(new_text)
 os.makedirs("weights", exist_ok = True)
 os.makedirs("logs", exist_ok = True)
 torch.save(model.state_dict(), f"weights/unet_finetuned_segmentation_32.pt")
 with open(f"logs/unet_finetuned_segmentation_32.txt", "w") as log:
-	log.write(log_text)
+	model.eval()
+	macs, parameters = get_model_complexity_info(model, (1, 256, 256), as_strings = True, print_per_layer_stat = False, verbose = False)
+	log.write(f"Model uses {macs} macs, and {parameters} parameters.")
 	log.flush()
