@@ -36,16 +36,16 @@ for epoch in range(epochs):
 		loss.backward()
 		optimizer.step()
 		training_loss = training_loss+loss.item()
-	model.eval()
-	validating_loss = 0.0
-	with torch.no_grad():
-		for image_tensors, mask_tensors in validating_loader:
-			image_tensors = image_tensors.to(device)
-			mask_tensors = mask_tensors.to(device)
-			preds = model(image_tensors)
-			loss = criterion(preds, mask_tensors)
-			validating_loss = validating_loss+loss.item()
-	print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss}, validating loss of {validating_loss}.")
-	# print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss}.")
+	# model.eval()
+	# validating_loss = 0.0
+	# with torch.no_grad():
+	# 	for image_tensors, mask_tensors in validating_loader:
+	# 		image_tensors = image_tensors.to(device)
+	# 		mask_tensors = mask_tensors.to(device)
+	# 		preds = model(image_tensors)
+	# 		loss = criterion(preds, mask_tensors)
+	# 		validating_loss = validating_loss+loss.item()
+	# print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss}, validating loss of {validating_loss}.")
+	print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss}.")
 os.makedirs("exports", exist_ok = True)
 torch.save(model.state_dict(), f"exports/unet_segmentation_{base_channels}.pt")
