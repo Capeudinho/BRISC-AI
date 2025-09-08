@@ -7,7 +7,7 @@ from datasets.segmentation_dataset import SegmentationDataset
 from losses.bce_dice_loss import BCEDiceLoss
 from datetime import datetime
 
-base_channels = 1
+base_channels = 32
 training_quantity = 512
 validating_quantity = 256
 batch_size = 32
