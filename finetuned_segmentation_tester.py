@@ -3,8 +3,6 @@ from torch.utils.data import DataLoader
 from models.unet import UNet
 from datasets.segmentation_dataset import SegmentationDataset
 
-weights_name = "unet_segmentation_8.pt"
-base_channels = 8
 testing_quantity = 120
 
 def dice_coefficient(prediction_tensors, mask_tensors):
@@ -14,9 +12,9 @@ def dice_coefficient(prediction_tensors, mask_tensors):
 	result = dice.mean().item()
 	return result
 
-model = UNet(in_channels = 1, out_channels = 1, base_channels = base_channels)
+model = UNet(in_channels = 1, out_channels = 1, base_channels = 32)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.load_state_dict(torch.load(f"weights/{weights_name}", map_location = device))
+model.load_state_dict(torch.load("weights/unet_finetuned_segmentation_32.pt", map_location = device))
 model.to(device)
 model.eval()
 testing_dataset = SegmentationDataset("data/segmentation/testing", testing_quantity)
@@ -24,6 +22,7 @@ testing_loader = DataLoader(testing_dataset, batch_size = 32, shuffle = False)
 dice_accuracies = []
 with torch.no_grad():
 	for image_tensors, mask_tensors in testing_loader:
+		image_tensors = image_tensors.repeat(1, 3, 1, 1)
 		image_tensors = image_tensors.to(device)
 		mask_tensors = mask_tensors.to(device)
 		prediction_tensors = model(image_tensors)
