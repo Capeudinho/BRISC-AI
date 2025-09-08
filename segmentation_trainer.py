@@ -7,12 +7,12 @@ from models.unet import UNet
 from datasets.segmentation_dataset import SegmentationDataset
 from losses.bce_dice_loss import BCEDiceLoss
 
-base_channels = 1
+base_channels = 32
 training_quantity = 512
 validating_quantity = 256
 batch_size = 32
 learning_rate = 2e-3
-epochs = 2
+epochs = 32
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
