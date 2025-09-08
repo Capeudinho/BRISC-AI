@@ -2,7 +2,6 @@ import os
 import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from ptflops import get_model_complexity_info
 from datasets.segmentation_dataset import SegmentationDataset
 from losses.bce_dice_loss import BCEDiceLoss
 
@@ -13,8 +12,8 @@ learning_rate = 2e-3
 epochs = 32
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = torch.hub.load("mateuszbuda/brain-segmentation-pytorch", "unet", in_channels = 3, out_channels = 1, init_features = 32, pretrained = True)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 training_dataset = SegmentationDataset("data/segmentation/training", training_quantity)
 validating_dataset = SegmentationDataset("data/segmentation/validating", validating_quantity)
@@ -47,10 +46,4 @@ for epoch in range(epochs):
 	# 		loss = criterion(prediction_tensors, mask_tensors)
 	# 		validating_loss = validating_loss+loss.item()
 os.makedirs("weights", exist_ok = True)
-os.makedirs("logs", exist_ok = True)
 torch.save(model.state_dict(), f"weights/unet_finetuned_segmentation_32.pt")
-with open(f"logs/unet_finetuned_segmentation_32.txt", "w") as log:
-	model.eval()
-	macs, parameters = get_model_complexity_info(model, (1, 256, 256), as_strings = True, print_per_layer_stat = False, verbose = False)
-	log.write(f"Model uses {macs} macs, and {parameters} parameters.")
-	log.flush()

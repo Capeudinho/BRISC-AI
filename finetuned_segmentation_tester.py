@@ -1,6 +1,7 @@
+import os
 import torch
 from torch.utils.data import DataLoader
-from models.unet import UNet
+from ptflops import get_model_complexity_info
 from datasets.segmentation_dataset import SegmentationDataset
 
 testing_quantity = 120
@@ -12,11 +13,13 @@ def dice_coefficient(prediction_tensors, mask_tensors):
 	result = dice.mean().item()
 	return result
 
-model = UNet(in_channels = 1, out_channels = 1, base_channels = 32)
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+model = torch.hub.load("mateuszbuda/brain-segmentation-pytorch", "unet", in_channels = 3, out_channels = 1, init_features = 32, pretrained = False)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.load_state_dict(torch.load("weights/unet_finetuned_segmentation_32.pt", map_location = device))
-model.to(device)
+model = model.to(device)
 model.eval()
+macs, parameters = get_model_complexity_info(model, (1, 256, 256), as_strings = True, print_per_layer_stat = False, verbose = False)
 testing_dataset = SegmentationDataset("data/segmentation/testing", testing_quantity)
 testing_loader = DataLoader(testing_dataset, batch_size = 32, shuffle = False)
 dice_accuracies = []
@@ -31,4 +34,7 @@ with torch.no_grad():
 		dice_accuracy = dice_coefficient(prediction_tensors, mask_tensors)
 		dice_accuracies.append(dice_accuracy)
 dice_accuracy = sum(dice_accuracies)/len(dice_accuracies)
-print(f"Dice coefficient accuracy of {dice_accuracy:.8f}.")
+os.makedirs("logs", exist_ok = True)
+with open(f"logs/unet_finetuned_segmentation_32.txt", "w") as log:
+	log.write(f"Model uses {macs} macs, and {parameters} parameters.\nDice coefficient accuracy of {dice_accuracy:.8f}.")
+	log.flush()
