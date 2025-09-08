@@ -5,14 +5,14 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from models.unet import UNet
 from utils.segmentation_dataset import SegmentationDataset
+from datetime import datetime
 
-base_channels = 64
-training_quantity = 10
-validating_quantity = 10
-batch_size = 10
-learning_rate = 1e-3
-epochs = 10
-title = "small"
+base_channels = 16
+training_quantity = 512
+validating_quantity = 256
+batch_size = 32
+learning_rate = 2e-3
+epochs = 32
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 training_dataset = SegmentationDataset("data/segmentation/training", training_quantity)
@@ -23,6 +23,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = UNet(in_channels = 1, out_channels = 1, base_channels = base_channels).to(device)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.Adam(model.parameters(), lr = learning_rate)
+print(f"Started in {datetime.now().strftime("%H:%M:%S")}.")
 for epoch in range(epochs):
 	model.train()
 	training_loss = 0.0
@@ -35,16 +36,16 @@ for epoch in range(epochs):
 		loss.backward()
 		optimizer.step()
 		training_loss = training_loss+loss.item()
-	# model.eval()
-	# validating_loss = 0.0
-	# with torch.no_grad():
-	# 	for image_tensors, mask_tensors in validating_loader:
-	# 		image_tensors = image_tensors.to(device)
-	# 		mask_tensors = mask_tensors.to(device)
-	# 		preds = model(image_tensors)
-	# 		loss = criterion(preds, mask_tensors)
-	# 		validating_loss = validating_loss+loss.item()
-	# print(f"Epoch {epoch+1} of {epochs}, training loss of {training_loss}, validating loss of {validating_loss}.")
-	print(f"Epoch {epoch+1} of {epochs}, training loss of {training_loss}.")
+	model.eval()
+	validating_loss = 0.0
+	with torch.no_grad():
+		for image_tensors, mask_tensors in validating_loader:
+			image_tensors = image_tensors.to(device)
+			mask_tensors = mask_tensors.to(device)
+			preds = model(image_tensors)
+			loss = criterion(preds, mask_tensors)
+			validating_loss = validating_loss+loss.item()
+	print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss}, validating loss of {validating_loss}.")
+	# print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss}.")
 os.makedirs("exports", exist_ok = True)
-torch.save(model.state_dict(), f"exports/unet_segmentation_{title}.pt")
+torch.save(model.state_dict(), f"exports/unet_segmentation_{base_channels}.pt")
