@@ -24,7 +24,9 @@ training_loader = DataLoader(training_dataset, batch_size = batch_size, shuffle 
 validating_loader = DataLoader(validating_dataset, batch_size = batch_size, shuffle = False)
 criterion = BCEDiceLoss(dice_weight = 0.75)
 optimizer = optim.Adam(model.parameters(), lr = learning_rate)
-print(f"Started in {datetime.now().strftime("%H:%M:%S")}.")
+new_text = f"Started in {datetime.now().strftime("%H:%M:%S")}."
+log_text = new_text
+print(new_text)
 for epoch in range(epochs):
 	model.train()
 	training_loss = 0.0
@@ -46,7 +48,13 @@ for epoch in range(epochs):
 	# 		prediction_tensors = model(image_tensors)
 	# 		loss = criterion(prediction_tensors, mask_tensors)
 	# 		validating_loss = validating_loss+loss.item()
-	# print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss:.8f}, validating loss of {validating_loss:.8f}.")
-	print(f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss:.8f}.")
+	# new_text = f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss:.8f}, validating loss of {validating_loss:.8f}."
+	new_text = f"Epoch {epoch+1} of {epochs}, in {datetime.now().strftime("%H:%M:%S")}, training loss of {training_loss:.8f}."
+	log_text = f"{log_text}\n{new_text}"
+	print(new_text)
 os.makedirs("weights", exist_ok = True)
+os.makedirs("logs", exist_ok = True)
 torch.save(model.state_dict(), f"weights/unet_segmentation_{base_channels}.pt")
+with open(f"logs/unet_segmentation_{base_channels}.txt", "w") as log:
+	log.write(log_text)
+	log.flush()
