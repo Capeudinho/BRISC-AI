@@ -19,7 +19,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.load_state_dict(torch.load("weights/unet_finetuned_segmentation_32.pt", map_location = device))
 model = model.to(device)
 model.eval()
-macs, parameters = get_model_complexity_info(model, (1, 256, 256), as_strings = True, print_per_layer_stat = False, verbose = False)
+macs, parameters = get_model_complexity_info(model, (3, 256, 256), as_strings = True, print_per_layer_stat = False, verbose = False)
 testing_dataset = SegmentationDataset("data/segmentation/testing", testing_quantity)
 testing_loader = DataLoader(testing_dataset, batch_size = 32, shuffle = False)
 dice_accuracies = []
