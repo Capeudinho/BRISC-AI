@@ -5,8 +5,8 @@ from ptflops import get_model_complexity_info
 from models.unet import UNet
 from datasets.segmentation_dataset import SegmentationDataset
 
-weights_name = "unet_segmentation_8.pt"
-base_channels = 8
+weights_name = "unet_segmentation_32.pt"
+base_channels = 32
 testing_quantity = 120
 
 def dice_coefficient(prediction_tensors, mask_tensors):

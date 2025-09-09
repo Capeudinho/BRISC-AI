@@ -3,7 +3,7 @@ from losses.dice_loss import DiceLoss
 
 class BCEDiceLoss(nn.Module):
 
-	def __init__(self, dice_weight = 0.5):
+	def __init__(self, dice_weight):
 		super(BCEDiceLoss, self).__init__()
 		self.bce_criterion = nn.BCEWithLogitsLoss()
 		self.dice_criterion = DiceLoss()
