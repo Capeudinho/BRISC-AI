@@ -39,7 +39,6 @@ for epoch in range(epochs):
 	# with torch.no_grad():
 	# 	for image_tensors, mask_tensors in validating_loader:
 	#		image_tensors = image_tensors.repeat(1, 3, 1, 1)
-	#		mask_tensors = mask_tensors.repeat(1, 3, 1, 1)
 	# 		image_tensors = image_tensors.to(device)
 	# 		mask_tensors = mask_tensors.to(device)
 	# 		prediction_tensors = model(image_tensors)
