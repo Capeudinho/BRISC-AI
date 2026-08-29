@@ -8,7 +8,8 @@ class DoubleConvolution(nn.Module):
 		self.double_convolution = nn.Sequential(nn.Conv2d(in_channels, out_channels, kernel_size = 3, padding = 1), nn.BatchNorm2d(out_channels), nn.ReLU(inplace = True), nn.Conv2d(out_channels, out_channels, kernel_size = 3, padding = 1), nn.BatchNorm2d(out_channels), nn.ReLU(inplace = True))
 
 	def forward(self, element):
-		return self.double_convolution(element)
+		result = self.double_convolution(element)
+		return result
 
 class UNet(nn.Module):
 
@@ -47,5 +48,6 @@ class UNet(nn.Module):
 		up_2 = self.convolution_2(torch.cat([up_2, down_2], dim = 1))
 		up_1 = self.up_1(up_2)
 		up_1 = self.convolution_1(torch.cat([up_1, down_1], dim = 1))
-		result = self.output(up_1)
+		output = self.output(up_1)
+		result = torch.sigmoid(output)
 		return result

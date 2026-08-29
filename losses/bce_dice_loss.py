@@ -5,7 +5,7 @@ class BCEDiceLoss(nn.Module):
 
 	def __init__(self, dice_weight):
 		super(BCEDiceLoss, self).__init__()
-		self.bce_criterion = nn.BCEWithLogitsLoss()
+		self.bce_criterion = nn.BCELoss()
 		self.dice_criterion = DiceLoss()
 		self.dice_weight = dice_weight
 

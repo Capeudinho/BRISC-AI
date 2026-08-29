@@ -7,8 +7,7 @@ class DiceLoss(nn.Module):
 		super(DiceLoss, self).__init__()
 
 	def forward(self, prediction_tensors, mask_tensors):
-		probability_tensors = torch.sigmoid(prediction_tensors)
-		probability_tensors = probability_tensors.contiguous().view(-1)
+		probability_tensors = prediction_tensors.contiguous().view(-1)
 		mask_tensors = mask_tensors.contiguous().view(-1)
 		intersection = (probability_tensors * mask_tensors).sum()
 		union = probability_tensors.sum()+mask_tensors.sum()

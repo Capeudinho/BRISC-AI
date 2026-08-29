@@ -31,7 +31,6 @@ with torch.no_grad():
 		image_tensors = image_tensors.to(device)
 		mask_tensors = mask_tensors.to(device)
 		prediction_tensors = model(image_tensors)
-		prediction_tensors = torch.sigmoid(prediction_tensors)
 		prediction_tensors = (prediction_tensors > 0.5).float()
 		dice_accuracy = dice_coefficient(prediction_tensors, mask_tensors)
 		dice_accuracies.append(dice_accuracy)
