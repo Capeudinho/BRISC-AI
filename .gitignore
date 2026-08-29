@@ -3,3 +3,4 @@ archive/
 data/
 weights/
 logs/
+*/__pycache__/
