@@ -3,14 +3,6 @@ import re
 from PIL import Image as img
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-for task in ["classification", "segmentation"]:
-	os.rename(f"archive/brisc2025/{task}_task", f"archive/{task}")
-	os.rename(f"archive/{task}/train", f"archive/{task}/training")
-	os.rename(f"archive/{task}/test", f"archive/{task}/validating")
-	os.makedirs(f"archive/{task}/testing", exist_ok = True)
-os.makedirs("archive/segmentation/testing/images", exist_ok = True)
-os.makedirs("archive/segmentation/testing/masks", exist_ok = True)
-os.rmdir("archive/brisc2025")
 for split in ["training", "validating"]:
 	for tumor in ["glioma", "meningioma", "pituitary", "no_tumor"]:
 		for image_name in os.listdir(f"archive/classification/{split}/{tumor}"):
