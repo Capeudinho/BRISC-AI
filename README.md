@@ -12,19 +12,19 @@ Downloads the BRISC 2025 dataset from [briscdataset/brisc2025](https://www.kaggl
 
 ### `segmentation_trainer.py`
 
-Trains the project's custom U-Net model using the segmentation dataset. The resulting model weights are saved in the `weights/` directory.
+Trains the project's custom U-Net model using the segmentation dataset. The resulting model weights are saved in the `weights` directory.
 
 ### `segmentation_tester.py`
 
-Evaluates the trained custom U-Net model using the testing dataset. The measured macs, parameters, and Dice coefficient accuracy are saved in the `logs/` directory.
+Evaluates the trained custom U-Net model using the testing dataset. The measured macs, parameters, and Dice coefficient accuracy are saved in the `logs` directory.
 
 ### `finetuned_segmentation_trainer.py`
 
-Fine-tunes a pretrained U-Net from [mateuszbuda/brain-segmentation-pytorch](https://github.com/mateuszbuda/brain-segmentation-pytorch) in GitHub using the segmentation dataset. The resulting fine-tuned model weights are saved in the `weights/` directory.
+Fine-tunes a pretrained U-Net from [mateuszbuda/brain-segmentation-pytorch](https://github.com/mateuszbuda/brain-segmentation-pytorch) in GitHub using the segmentation dataset. The resulting fine-tuned model weights are saved in the `weights` directory.
 
 ### `finetuned_segmentation_tester.py`
 
-Evaluates the fine-tuned U-Net model using the testing dataset. The measured macs, parameters, and Dice coefficient accuracy are saved in the `logs/` directory.
+Evaluates the fine-tuned U-Net model using the testing dataset. The measured macs, parameters, and Dice coefficient accuracy are saved in the `logs` directory.
 
 ### `logs_plotter.py`
 
