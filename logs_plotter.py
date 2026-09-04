@@ -22,7 +22,7 @@ for log_name in os.listdir("logs"):
 plt.figure(figsize = (8, 6))
 plt.scatter(macs_list, accuracy_list, c = "black", marker = "o")
 for x, y, label in zip(macs_list, accuracy_list, labels):
-    plt.annotate(label, (x, y), textcoords = "offset points", xytext = (0, 10), ha = "center")
+    plt.annotate(label, (x, y), textcoords = "offset points", xytext = (0, 12.5), ha = "center", bbox = dict(boxstyle = "round,pad=0.25", alpha = 0.75, facecolor = "white", edgecolor = "gray"))
 plt.xlabel("GMacs")
 plt.ylabel("Dice coefficient accuracy")
 plt.title("GMacs vs Dice coefficient accuracy")
