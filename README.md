@@ -8,7 +8,7 @@ Run the scripts in the following order.
 
 ### `data_downloader.py`
 
-Downloads the BRISC 2025 dataset from [`briscdataset/brisc2025`](https://www.kaggle.com/datasets/briscdataset/brisc2025) in Kaggle, reorganizes it into the `archive` directory, and formats it into the `data` directory.
+Downloads the BRISC 2025 dataset from [briscdataset/brisc2025](https://www.kaggle.com/datasets/briscdataset/brisc2025) in Kaggle, reorganizes it into the `archive` directory, and formats it into the `data` directory.
 
 ### `segmentation_trainer.py`
 
@@ -20,7 +20,7 @@ Evaluates the trained custom U-Net model using the testing dataset. The measured
 
 ### `finetuned_segmentation_trainer.py`
 
-Fine-tunes a pretrained U-Net from [`mateuszbuda/brain-segmentation-pytorch`](https://github.com/mateuszbuda/brain-segmentation-pytorch) in GitHub using the segmentation dataset. The resulting fine-tuned model weights are saved in the `weights/` directory.
+Fine-tunes a pretrained U-Net from [mateuszbuda/brain-segmentation-pytorch](https://github.com/mateuszbuda/brain-segmentation-pytorch) in GitHub using the segmentation dataset. The resulting fine-tuned model weights are saved in the `weights/` directory.
 
 ### `finetuned_segmentation_tester.py`
 
