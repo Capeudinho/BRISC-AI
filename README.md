@@ -2,7 +2,7 @@
 
 This project trains, and evaluates U-Net models for brain tumor image segmentation. It downloads the BRISC 2025 dataset, prepares the images, and masks, trains a custom U-Net, fine-tunes a pretrained U-Net, and compares their segmentation performance using the Dice coefficient accuracy.
 
-## Project Workflow
+## Project workflow
 
 Run the scripts in the following order.
 
